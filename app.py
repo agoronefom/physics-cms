@@ -768,10 +768,20 @@ def reports_hub():
 
 @app.route('/class/<int:class_id>')
 def class_workspace(class_id):
+  classroom = ClassRoom.query.get_or_404(class_id)
+
+  # Query students and sort them alphabetically from A to Z
+  sorted_students = (
+      Student.query.filter_by(class_id=class_id)
+      .order_by(Student.name.asc())
+      .all()
+  )
+
   return render_template_string(
       TEMPLATE,
       active_tab='class_workspace',
-      current_class=ClassRoom.query.get_or_404(class_id),
+      current_class=classroom,
+      students=sorted_students,  # Passes the alphabetically sorted list
       sub_tab=request.args.get('tab', 'students'),
       today=datetime.utcnow().strftime('%Y-%m-%d'),
   )
