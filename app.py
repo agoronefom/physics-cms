@@ -25,10 +25,9 @@ db = SQLAlchemy(app)
 class ClassRoom(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(100), nullable=False)
-  schedule = db.Column(db.String(100), nullable=False)
-  room = db.Column(db.String(50), nullable=False)
+  # Automatically sorts all students in this class alphabetically by name (A to Z)
   students = db.relationship(
-      'Student', backref='classroom', lazy=True, cascade='all, delete-orphan'
+      'Student', backref='classroom', lazy=True, order_by='Student.name'
   )
   assignments = db.relationship(
       'Assignment', backref='classroom', lazy=True, cascade='all, delete-orphan'
