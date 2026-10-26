@@ -78,6 +78,19 @@ class Assignment(db.Model):
   class_id = db.Column(
       db.Integer, db.ForeignKey('class_room.id'), nullable=False
   )
+
+  @property
+  def max_points(self):
+    limits = {
+        'Homework': 10,
+        'Lab report': 50,
+        'Quiz': 10,
+        'Exam': 100,
+        'Group project': 20,
+    }
+    # Looks up the category; defaults to 100 if something else slips through
+    return limits.get(self.category, 100)
+  )
   grades = db.relationship(
       'Grade', backref='assignment', lazy=True, cascade='all, delete-orphan'
   )
