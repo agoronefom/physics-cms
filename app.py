@@ -86,9 +86,8 @@ class Assignment(db.Model):
         'Lab report': 50,
         'Quiz': 10,
         'Exam': 100,
-        'Group project': 20,
+        'Group Project': 20,  # Capital P to match your code!
     }
-    # Looks up the category; defaults to 100 if something else slips through
     return limits.get(self.category, 100)
   )
   grades = db.relationship(
