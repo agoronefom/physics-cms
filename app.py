@@ -1032,6 +1032,12 @@ def update_class_grades(class_id):
       s_id, a_id = int(parts[1]), int(parts[2])
       try:
         val = float(value)
+
+        # Enforce maximum points based on assessment category
+        assignment = Assignment.query.get(a_id)
+        if assignment and val > assignment.max_points:
+          val = assignment.max_points
+
         g_entry = Grade.query.filter_by(
             student_id=s_id, assignment_id=a_id
         ).first()
@@ -1045,6 +1051,7 @@ def update_class_grades(class_id):
   flash('Grades saved!', 'success')
   return redirect(
       url_for('class_workspace', class_id=class_id, tab='gradebook')
+  )
   )
 
 
